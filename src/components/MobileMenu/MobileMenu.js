@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled, { keyframes } from 'styled-components/macro';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 
 import { QUERIES, WEIGHTS } from '../../constants';
@@ -12,6 +12,7 @@ import VisuallyHidden from '../VisuallyHidden';
 const MobileMenu = ({ isOpen, onDismiss }) => {
   return (
     <Overlay isOpen={isOpen} onDismiss={onDismiss}>
+      <Backdrop />
       <Content aria-label="Menu">
         <CloseButton onClick={onDismiss}>
           <Icon id="close" />
@@ -36,24 +37,47 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
   );
 };
 
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`
+
+const slide = keyframes`
+  from { transform: translate(100%); }
+  to { transform: translate(0%); }
+`
+
 const Overlay = styled(DialogOverlay)`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--color-backdrop);
+  background: transparent;
   display: flex;
   justify-content: flex-end;
 `;
 
+const Backdrop = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-backdrop);
+  animation: ${fadeIn} 500ms;
+`
+
 const Content = styled(DialogContent)`
+  position: relative;
   background: white;
   width: 300px;
   height: 100%;
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+  animation: ${slide} 500ms both;
+  animation-delay: 200ms;
 `;
 
 const CloseButton = styled(UnstyledButton)`
@@ -61,12 +85,16 @@ const CloseButton = styled(UnstyledButton)`
   top: 10px;
   right: 0;
   padding: 16px;
+  animation: ${fadeIn} 800ms both;
+  animation-delay: 700ms;
 `;
 
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  animation: ${fadeIn} 800ms both;
+  animation-delay: 600ms;
 `;
 
 const NavLink = styled.a`
@@ -90,6 +118,8 @@ const Footer = styled.footer`
   flex-direction: column;
   gap: 14px;
   justify-content: flex-end;
+  animation: ${fadeIn} 800ms both;
+  animation-delay: 600ms;
 `;
 
 const SubLink = styled.a`
